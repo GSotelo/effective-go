@@ -1,2 +1,3 @@
-# writing-idiomatic-go
-Effective and Idiomatic Go Programming.
+# Effective and Idiomatic Go Programming
+
+Work in progress 🈺 
