@@ -5,6 +5,26 @@ In Go, `nil` is a predeclared identifier available in the universal block. It is
 # When to use nil?
 
 ## Error handling
-Go follows a convention where functions return an error as their final return value. If the error is nil, it means the operation was successful; if it's not nil, it signals a failure. This approach promotes clear and straightforward error handling. Instead of relying on exceptions or special error codes like in Java, Python, or C#, Go adopts a minimalist and explicit model where errors are treated as regular return values.
+The standard practice in Go is for functions to return an error type as their terminal return value. A nil value denotes successful execution, whereas a non-nil value indicates an error. This explicit mechanism for error reporting distinguishes Go from languages that rely on exceptions or specific error codes. More details are provided in the example below.
 
+```go
+package main
 
+import "fmt"
+
+func safeDivide(a, b float64) (float64, error) {
+	if b == 0 {
+		return 0, fmt.Errorf("Division by zero")
+	}
+	return a / b, nil
+}
+
+func main() {
+	result, err := safeDivide(0, 0)
+	if err != nil {
+		fmt.Println("Error: ", err)
+	} else {
+		fmt.Println("Result: ", result)
+	}
+}
+```
