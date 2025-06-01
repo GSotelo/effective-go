@@ -2,5 +2,5 @@
 
 Go uses static typing, requiring you to define a variable’s data type when declaring it. This approach helps identify mistakes early in the development cycle. Go’s core data types can be divided into the following main categories:
 
-* Primitives Types
-* Composite Types
+- [Primitives Types](primitives-types.md)
+- [Composite Types](composite-types.md)
