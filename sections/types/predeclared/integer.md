@@ -1,7 +1,4 @@
-# Numeric types
-- [ ] TODO: Add more details about numeric types, including examples and usage.
-
-## Integers
+# Integers types
 
 | Type     | Size   | Range                                       |
 |----------|--------|---------------------------------------------|
