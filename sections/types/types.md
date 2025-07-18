@@ -6,5 +6,5 @@ Go uses static typing, requiring you to define a variable’s data type when dec
   - Numeric Types
     - [Integer](predeclared/integer.md)
 - Composite Types
-  - Arrays
+  - [Arrays](composite/arrays.md)
   - Slices
