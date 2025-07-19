@@ -25,7 +25,7 @@ Arrays have a fixed size defined at compile time. If you need a dynamic size, co
 package main
 import "fmt"
 
-// Function that accepts an array of exactly 3 Pokémon
+// Function that accepts an array of exactly 2 Pokémon
 func printPokemons(pokemons [2]string){
     for i, pokemon := range pokemons {
         fmt.Printf("Pokemon %d: %s\n",i+1,pokemon)
