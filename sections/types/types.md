@@ -8,4 +8,5 @@ Go uses static typing, requiring you to define a variable’s data type when dec
 - Composite Types
   - [Arrays](composite/arrays.md)
   - [Slices](composite/slices.md)
-  - [Channels](composite/channels.md)
+- Reference Types
+  - [Channels](channels.md)

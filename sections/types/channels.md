@@ -2,6 +2,10 @@
 
 Channels are Go's primary mechanism for communication between goroutines. They allow you to pass data safely between concurrent operations, embodying Go's philosophy: "Don't communicate by sharing memory; share memory by communicating."
 
+This philosophy means that instead of having multiple goroutines access shared variables (which requires complex locking), you pass data through channels. One goroutine "owns" the data at a time, eliminating race conditions naturally.
+
+Channels are reference types with a zero value of `nil`. Like slices and maps, they must be created using `make` before use.
+
 ## Creating Channels
 
 Channels are created using the `make` function with the `chan` keyword:
