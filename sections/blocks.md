@@ -29,10 +29,10 @@ package main
 
 import "fmt"
 
-var dbPassword = "secret123"  // lowercase - unexported, only accessible within package main
+var databaseURL = "postgresql://localhost:5432/myapp"  // lowercase - unexported, only accessible within package main
 
 func ConnectDB() {
-    fmt.Println("Password:", dbPassword)  // can use package-level variable
+    fmt.Println("Connecting to:", databaseURL)  // can use package-level variable
 }
 ```
 
@@ -43,7 +43,7 @@ package main
 import "fmt"
 
 func StartServer() {
-    fmt.Println("Using password:", dbPassword)  // can access dbPassword from database.go - same package
+    fmt.Println("Database URL:", databaseURL)  // can access databaseURL from database.go - same package
 }
 ```
 
