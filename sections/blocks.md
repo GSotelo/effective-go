@@ -96,11 +96,15 @@ import "fmt"
 
 func main() {
     message := "Hello"  // local to main() - not accessible elsewhere
-    fmt.Println(message)
+    fmt.Println("From main:", message)
+
+    greet()
 }
 
-func other() {
+func greet() {
     // message is not accessible here - different function scope
+    greeting := "Hi there"  // local to greet() function
+    fmt.Println("From greet:", greeting)
 }
 ```
 
