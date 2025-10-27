@@ -1,4 +1,4 @@
-# Variable Shadowing
+# Variable shadowing
 
 ## Definition
 
@@ -33,6 +33,6 @@ After loop, x = 100
 
 The shadowed `x` inside the loop only exists within the loop scope. Outside the loop, the original `x` (100) is visible.
 
-## Try it Yourself
+## Try it yourself
 
-[Run this example in the Go Playground](https://go.dev/play/p/t6vEYHaxDn8)
+[Run this example in the Go playground](https://go.dev/play/p/t6vEYHaxDn8)
