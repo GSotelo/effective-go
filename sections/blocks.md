@@ -122,9 +122,10 @@ func main() {
 
     if age >= 18 {
         status := "adult"  // only exists inside this if block
-        fmt.Println(status)
+        fmt.Println("Status:", status)
     }
     // status is not accessible here
+    fmt.Println("Age check complete")
 }
 ```
 
@@ -137,9 +138,10 @@ import "fmt"
 func main() {
     for i := 1; i <= 3; i++ {
         result := i * 2  // only exists inside this loop iteration
-        fmt.Println(result)
+        fmt.Println("i =", i, "result =", result)
     }
     // result is not accessible here - loop scope ended
+    fmt.Println("Loop finished")
 }
 ```
 
@@ -155,12 +157,15 @@ func main() {
     switch day {
     case 1:
         dayName := "Monday"  // only exists in this case block
-        fmt.Println(dayName)
+        fmt.Println("Day:", dayName)
     case 2:
         dayName := "Tuesday"  // different block, can reuse the name
-        fmt.Println(dayName)
+        fmt.Println("Day:", dayName)
+    default:
+        fmt.Println("Unknown day")
     }
     // dayName is not accessible here
+    fmt.Println("Switch complete")
 }
 ```
 
