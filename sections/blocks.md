@@ -10,12 +10,19 @@ Scope: The file-level declarations within a single `.go` file. Variables declare
 ```go
 package main
 
+import "fmt"
+
 // File block: visible throughout this file
 const maxSize = 100
 var counter = 0
 
 func init() {
     counter = 1  // can access file-level variables
+}
+
+func main() {
+    fmt.Println("Max size:", maxSize)
+    fmt.Println("Counter:", counter)
 }
 ```
 
