@@ -191,12 +191,24 @@ func main() {
 
 ## Key concepts
 
-1. **Nested scopes**: Inner blocks can see and use variables from outer blocks, but outer blocks cannot see variables declared in inner blocks.
+### Scope and Visibility
+- **Inner blocks can access outer blocks**: Variables declared in outer blocks are visible and accessible in inner blocks.
+- **Outer blocks cannot access inner blocks**: Once you leave an inner block, variables declared there are no longer accessible.
 
-2. **Variable lifetime**: A variable exists only from its declaration to the end of its block. Once a block closes, its variables are gone.
+### Variable Lifetime
+- Variables exist only from their declaration until the end of their block.
+- Once a block closes, all variables declared in that block are destroyed.
+- This helps manage memory and prevents accidental variable reuse.
 
-3. **Hierarchy**: Blocks follow a hierarchy:
-   - Package ← File ← Function ← Control Flow ← Explicit Blocks
-   - Variables are accessible from inner to outer, but not the other way around.
+### Block Hierarchy
+Blocks follow a clear hierarchy from largest to smallest scope:
+1. **Package block** - Widest scope, shared across all files in a package
+2. **File block** - Visible throughout a single `.go` file
+3. **Function block** - Local to a specific function
+4. **Control flow blocks** - Limited to if/for/switch structures
+5. **Explicit blocks** - Smallest scope, created with `{ }`
 
-4. **Shadowing risk**: You can declare a variable with the same name in an inner block, which hides (shadows) the outer variable.
+Variables declared in inner blocks override those in outer blocks within that scope.
+
+### Shadowing Risk
+You can declare a variable with the same name in an inner block. This **shadows** (hides) the outer variable within that inner scope. While technically valid, shadowing can cause confusion and bugs. Be careful when reusing variable names in nested scopes.
