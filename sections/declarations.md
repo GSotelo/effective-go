@@ -4,26 +4,7 @@
 
 Go provides two ways to declare variables: the `var` keyword and the short variable declaration `:=`.
 
-### var
-
-The `var` keyword can be used at any scope level:
-
-```go
-// Package level
-var packageVar = "available everywhere"
-
-func example() {
-    // Function level
-    var localVar = "available in function"
-
-    if true {
-        // Block level
-        var blockVar = "available in block"
-    }
-}
-```
-
-### Short Variable Declaration (:=)
+### Short variable declaration (:=)
 
 The `:=` operator declares and initializes a variable with type inference. **It cannot be used outside of functions.**
 
