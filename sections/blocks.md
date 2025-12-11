@@ -80,7 +80,7 @@ func main() {
 **Note:** Package-level variables should be avoided because they introduce global mutable state, making code harder to test, reason about, and vulnerable to unexpected mutations across your package.
 
 ## Function block
-Scope: Inside a function body. Variables declared here are local to that function only and cannot be accessed from outside.
+Inside a function body. Variables declared here are local to that function only and cannot be accessed from outside.
 
 ```go
 package main
