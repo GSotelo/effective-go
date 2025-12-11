@@ -184,8 +184,8 @@ func main() {
 ## Key concepts
 
 ### Scope and visibility
-- **Inner blocks can access outer blocks**: Variables declared in outer blocks are visible and accessible in inner blocks.
-- **Outer blocks cannot access inner blocks**: Once you leave an inner block, variables declared there are no longer accessible.
+- Variables declared in outer blocks are visible and accessible in inner blocks.
+- Once you leave an inner block, variables declared there are no longer accessible.
 
 ### Variable lifetime
 - Variables exist only from their declaration until the end of their block.
@@ -199,8 +199,6 @@ Blocks follow a clear hierarchy from largest to smallest scope:
 - **Function block** - Local to a specific function
 - **Control flow blocks** - Limited to if/for/switch structures
 - **Explicit blocks** - Smallest scope, created with `{ }`
-
-Key distinction: Package-level declarations are shared across all files in the package, but imports are per-file (file-scoped).
 
 Variables declared in inner blocks override those in outer blocks within that scope.
 
