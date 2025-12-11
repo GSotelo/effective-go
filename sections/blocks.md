@@ -28,49 +28,39 @@ func AnotherFunction() {
 ```
 
 ## Package block
-All files in the same package. Variables declared at the package level (outside functions) are accessible from any file in that package.
+Variables declared at the package level (outside functions) are accessible from any file in that package. First, let's create a library package with exported and unexported variables:
 
-**Within same package (main):**
 ```go
-// database.go
-package main
+// config/settings.go
+package config
 
 import "fmt"
 
-var databaseURL = "postgresql://localhost:5432/myapp"  // lowercase - unexported, only accessible within package main
+var defaultTimeout = 30  // lowercase - unexported, only accessible within config package
 
-func ConnectDB() {
-    fmt.Println("Connecting to:", databaseURL)  // can use package-level variable
+// Timeout is the request timeout in seconds
+var Timeout = defaultTimeout  // uppercase - exported, accessible from other packages
+
+func LogSettings() {
+    fmt.Println("Timeout:", defaultTimeout)  // can use package-level variable
 }
 ```
 
+Now, another file in the same `config` package can access both:
+
 ```go
-// server.go
-package main
+// config/server.go
+package config
 
 import "fmt"
 
-func StartServer() {
-    fmt.Println("Database URL:", databaseURL)  // can access databaseURL from database.go - same package
+func InitServer() {
+    fmt.Println("Using timeout:", defaultTimeout)  // can access unexported defaultTimeout - same package
+    fmt.Println("Server ready with timeout:", Timeout)
 }
 ```
 
-**Across different packages:**
-To share variables across packages, define them in a non-main package with uppercase (exported):
-
-```go
-// mylib/settings.go
-package mylib
-
-import "fmt"
-
-var privateVar = "only-for-mylib"  // lowercase - unexported, only accessible within mylib package
-var PublicVar = "accessible-everywhere"  // uppercase - exported, accessible from other packages
-
-func Setup() {
-    fmt.Println(privateVar)  // can use package-level variable
-}
-```
+From a different package (main), you can only access exported variables:
 
 ```go
 // main.go
@@ -78,14 +68,16 @@ package main
 
 import (
     "fmt"
-    "mylib"
+    "config"
 )
 
 func main() {
-    fmt.Println(mylib.PublicVar)  // can access exported PublicVar from mylib
-    // fmt.Println(mylib.privateVar)  // ERROR - privateVar is unexported, not accessible
+    fmt.Println("App timeout:", config.Timeout)  // can access exported Timeout from config package
+    // fmt.Println(config.defaultTimeout)  // ERROR - unexported, not accessible across packages
 }
 ```
+
+**Note:** Package-level variables should be avoided because they introduce global mutable state, making code harder to test, reason about, and vulnerable to unexpected mutations across your package.
 
 ## Function block
 Scope: Inside a function body. Variables declared here are local to that function only and cannot be accessed from outside.
