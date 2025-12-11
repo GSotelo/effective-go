@@ -90,7 +90,6 @@ import "fmt"
 func main() {
     message := "Hello"  // local to main() - not accessible elsewhere
     fmt.Println("From main:", message)
-
     greet()
 }
 
@@ -102,9 +101,9 @@ func greet() {
 ```
 
 ## Control flow blocks
-Scope: Inside control structures. Variables declared here exist only within that specific block.
+Inside control structures. Variables declared here exist only within that specific block.
 
-**if/else block:**
+**if/else:**
 ```go
 package main
 
@@ -122,7 +121,7 @@ func main() {
 }
 ```
 
-**for loop block:**
+**for loop:**
 ```go
 package main
 
@@ -138,7 +137,7 @@ func main() {
 }
 ```
 
-**switch/case block:**
+**switch:**
 ```go
 package main
 
@@ -195,11 +194,11 @@ func main() {
 
 ### Block hierarchy
 Blocks follow a clear hierarchy from largest to smallest scope:
-1. **Package block** - Widest scope, shared across all files in a package (for declarations: variables, constants, functions, types)
-2. **File block** - Specific to one `.go` file (imports are file-scoped)
-3. **Function block** - Local to a specific function
-4. **Control flow blocks** - Limited to if/for/switch structures
-5. **Explicit blocks** - Smallest scope, created with `{ }`
+- **Package block** - Widest scope, shared across all files in a package (for declarations: variables, constants, functions, types)
+- **File block** - Specific to one `.go` file (imports are file-scoped)
+- **Function block** - Local to a specific function
+- **Control flow blocks** - Limited to if/for/switch structures
+- **Explicit blocks** - Smallest scope, created with `{ }`
 
 Key distinction: Package-level declarations are shared across all files in the package, but imports are per-file (file-scoped).
 
