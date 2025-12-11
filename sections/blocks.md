@@ -3,29 +3,32 @@
 A block is a set of statements enclosed by matching braces `{}`. Blocks create scopes — regions where variables exist and can be accessed. Understanding blocks is essential to understanding how variables interact in Go.
 
 ## File block
-Scope: The file-level declarations within a single `.go` file. Variables declared here are visible throughout the file.
+Import declarations are file-scoped — each file must import the packages it needs.
 
 ```go
-package main
+// file1.go
+package myapp
 
-import "fmt"
+import "fmt"  // fmt is only accessible in file1.go
 
-// File block: visible throughout this file
-const maxSize = 100
-var counter = 0
-
-func init() {
-    counter = 1  // can access file-level variables
+func PrintMessage(msg string) {
+    fmt.Println(msg)  // can use fmt here
 }
+```
 
-func main() {
-    fmt.Println("Max size:", maxSize)
-    fmt.Println("Counter:", counter)
+```go
+// file2.go
+package myapp
+
+import "fmt"  // must import separately; file1.go's import doesn't apply here
+
+func AnotherFunction() {
+    fmt.Println("Hello")  // can use fmt here because of the import above
 }
 ```
 
 ## Package block
-Scope: All files in the same package. Variables declared at the package level (outside functions) are accessible from any file in that package.
+All files in the same package. Variables declared at the package level (outside functions) are accessible from any file in that package.
 
 **Within same package (main):**
 ```go
@@ -200,11 +203,13 @@ func main() {
 
 ### Block hierarchy
 Blocks follow a clear hierarchy from largest to smallest scope:
-1. **Package block** - Widest scope, shared across all files in a package
-2. **File block** - Visible throughout a single `.go` file
+1. **Package block** - Widest scope, shared across all files in a package (for declarations: variables, constants, functions, types)
+2. **File block** - Specific to one `.go` file (imports are file-scoped)
 3. **Function block** - Local to a specific function
 4. **Control flow blocks** - Limited to if/for/switch structures
 5. **Explicit blocks** - Smallest scope, created with `{ }`
+
+Key distinction: Package-level declarations are shared across all files in the package, but imports are per-file (file-scoped).
 
 Variables declared in inner blocks override those in outer blocks within that scope.
 
