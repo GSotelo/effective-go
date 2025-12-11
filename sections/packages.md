@@ -4,18 +4,27 @@ A package is a collection of related code files in the same directory. All files
 
 ## Naming conventions
 
-**Package names should be nouns** — they describe what the package contains, not what it does.
-
-**Function names should be verbs** — they describe the action being performed.
+- **Packages** use nouns (what it contains): `database`, `http`, `user`
+- **Functions** use verbs (what it does): `Connect()`, `Query()`, `Send()`
 
 ```go
 package database  // noun - what it is
 
-func Connect(dsn string) {  // verb - what it does
-    // implementation
-}
-
 func Query(sql string) {  // verb - what it does
     // implementation
+}
+```
+
+## Special case: package main
+
+The `main` package is a special package used to create executable programs rather than reusable libraries.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
 }
 ```
