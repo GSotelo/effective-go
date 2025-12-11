@@ -1,10 +1,8 @@
 # Blocks in Go
 
-A block is a set of statements enclosed by matching braces `{}`. Blocks create scopes—regions where variables exist and can be accessed. Understanding blocks is essential to understanding how variables interact in Go.
+A block is a set of statements enclosed by matching braces `{}`. Blocks create scopes — regions where variables exist and can be accessed. Understanding blocks is essential to understanding how variables interact in Go.
 
-## Basic block types in Go
-
-### 1. File block
+## File block
 Scope: The file-level declarations within a single `.go` file. Variables declared here are visible throughout the file.
 
 ```go
@@ -26,7 +24,7 @@ func main() {
 }
 ```
 
-### 2. Package block
+## Package block
 Scope: All files in the same package. Variables declared at the package level (outside functions) are accessible from any file in that package.
 
 **Within same package (main):**
@@ -86,7 +84,7 @@ func main() {
 }
 ```
 
-### 3. Function block
+## Function block
 Scope: Inside a function body. Variables declared here are local to that function only and cannot be accessed from outside.
 
 ```go
@@ -108,7 +106,7 @@ func greet() {
 }
 ```
 
-### 4. Control flow blocks
+## Control flow blocks
 Scope: Inside control structures. Variables declared here exist only within that specific block.
 
 **if/else block:**
@@ -169,7 +167,7 @@ func main() {
 }
 ```
 
-### 5. Explicit blocks
+## Explicit blocks
 Scope: Standalone `{ ... }` blocks create a new inner scope without any condition. Useful for limiting variable lifetime.
 
 ```go
@@ -191,16 +189,16 @@ func main() {
 
 ## Key concepts
 
-### Scope and Visibility
+### Scope and visibility
 - **Inner blocks can access outer blocks**: Variables declared in outer blocks are visible and accessible in inner blocks.
 - **Outer blocks cannot access inner blocks**: Once you leave an inner block, variables declared there are no longer accessible.
 
-### Variable Lifetime
+### Variable lifetime
 - Variables exist only from their declaration until the end of their block.
 - Once a block closes, all variables declared in that block are destroyed.
 - This helps manage memory and prevents accidental variable reuse.
 
-### Block Hierarchy
+### Block hierarchy
 Blocks follow a clear hierarchy from largest to smallest scope:
 1. **Package block** - Widest scope, shared across all files in a package
 2. **File block** - Visible throughout a single `.go` file
@@ -210,5 +208,5 @@ Blocks follow a clear hierarchy from largest to smallest scope:
 
 Variables declared in inner blocks override those in outer blocks within that scope.
 
-### Shadowing Risk
+### Shadowing risk
 You can declare a variable with the same name in an inner block. This **shadows** (hides) the outer variable within that inner scope. While technically valid, shadowing can cause confusion and bugs. Be careful when reusing variable names in nested scopes.
