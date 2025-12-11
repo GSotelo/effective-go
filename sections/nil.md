@@ -14,17 +14,17 @@ import "fmt"
 
 func safeDivide(a, b float64) (float64, error) {
 	if b == 0 {
-		return 0, fmt.Errorf("Division by zero")
+		return 0, fmt.Errorf("division by zero: a=%v, b=%v", a, b)
 	}
 	return a / b, nil
 }
 
 func main() {
-	result, err := safeDivide(0, 0)
+	result, err := safeDivide(10, 2)
 	if err != nil {
-		fmt.Println("Error: ", err)
-	} else {
-		fmt.Println("Result: ", result)
+		fmt.Println(err)
+		return
 	}
+	fmt.Println(result)
 }
 ```
