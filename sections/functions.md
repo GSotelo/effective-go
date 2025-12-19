@@ -219,3 +219,31 @@ func main() {
 - Use the spread operator `...` to pass a slice to a variadic function: `f(mySlice...)`
 - A nil slice is passed when no arguments are provided for the variadic parameter
 - Only one variadic parameter is allowed per function, and it must be last
+
+## Named return values
+
+Named return values are pre-declared variables in the function signature that can be referenced and assigned within the function body, then explicitly returned by specifying them in the return statement.
+
+```go
+func divide(a, b float64) (result float64, err error) {
+    if b == 0 {
+        err = fmt.Errorf("division by zero")
+        return result, err
+    }
+    result = a / b
+    return result, err
+}
+```
+
+> **Warning**: Avoid using bare return statements with named return values. Bare returns make it difficult to track how data flows through your function. When using a bare return, the last value assigned to each named return variable is what gets returned. If the function receives invalid input and returns early without assignment, the zero values of those return types are returned instead.
+
+```go
+func divide(a, b float64) (result float64, err error) {
+    if b == 0 {
+        err = fmt.Errorf("division by zero")
+        return // returns (0.0, error) - result is zero value
+    }
+    result = a / b
+    return // returns (calculated result, nil) - err is zero value
+}
+```
