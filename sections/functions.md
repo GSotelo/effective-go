@@ -247,3 +247,45 @@ func divide(a, b float64) (result float64, err error) {
     return // returns (calculated result, nil) - err is zero value
 }
 ```
+
+## Functions as values
+
+Functions are first-class values in Go, meaning they can be assigned to variables, passed as arguments, and returned from other functions. This enables powerful functional programming patterns and flexible code design.
+
+```go
+package main
+
+import "fmt"
+
+// Define a function type that takes two integers and returns an integer
+type Operation func(int, int) int
+
+// add is a function that matches the Operation signature
+func add(a, b int) int {
+    return a + b
+}
+
+// multiply is another function that matches the Operation signature
+func multiply(a, b int) int {
+    return a * b
+}
+
+func main() {
+    // Assign functions to variables of type Operation
+    var op Operation
+
+    op = add
+    fmt.Println("5 + 3 =", op(5, 3))    // 8
+
+    op = multiply
+    fmt.Println("5 * 3 =", op(5, 3))    // 15
+
+    // Functions can also be passed directly without declaring the type
+    calculate := func(x, y int, operation Operation) int {
+        return operation(x, y)
+    }
+
+    fmt.Println("Calculate with add:", calculate(10, 2, add))        // 12
+    fmt.Println("Calculate with multiply:", calculate(10, 2, multiply)) // 20
+}
+```
