@@ -289,3 +289,16 @@ func main() {
     fmt.Println("Calculate with multiply:", calculate(10, 2, multiply)) // 20
 }
 ```
+
+## Anonymous functions
+
+Anonymous functions are function literals defined without a name. They can be created inline and used in several ways: assigned to variables for later invocation, passed directly as arguments to other functions, or executed immediately at the point of definition. Anonymous functions have access to variables from their enclosing scope, forming closures.
+
+```go
+func main() {
+    square := func(n int) int { return n * n }
+    fmt.Println(square(5)) // 25
+}
+```
+
+> **Note**: Anonymous functions are commonly used with `defer` and goroutines because they can capture variables from the surrounding scope. This lets you write cleanup logic or start concurrent operations inline without creating separate named functions.
