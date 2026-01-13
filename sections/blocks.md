@@ -158,7 +158,7 @@ func AnotherFunction() {
 ```
 
 ## Function block
-Inside a function body. Variables declared here are local to that function only and cannot be accessed from outside.
+Variables declared inside a function exist only within that function and cannot be accessed elsewhere.
 
 ```go
 package main
