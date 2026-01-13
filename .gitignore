@@ -4,3 +4,6 @@
 
 # Notes
 notes/
+
+# macOS system files
+.DS_Store
