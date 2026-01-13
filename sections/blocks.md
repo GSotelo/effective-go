@@ -4,7 +4,7 @@ A block is a set of statements enclosed by matching braces `{}`. Blocks create s
 
 ## Universal block
 
-The universal block contains Go's **predeclared identifiers** — built-in constants, types, and functions that are available everywhere in your program without needing to import anything. These are the foundational building blocks of the language.
+The universal block contains Go's **predeclared** identifiers — built-in constants, types, and functions that are available everywhere in your program without needing to import anything. These are the foundational building blocks of the language.
 
 **Predeclared constants:**
 ```go
