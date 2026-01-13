@@ -46,6 +46,8 @@ complex() // create complex number
 real()    // get real part of complex
 imag()    // get imaginary part of complex
 close()   // close a channel
+print()   // print to stderr (for bootstrapping/debugging)
+println() // print to stderr with newline (for bootstrapping/debugging)
 panic()   // trigger panic
 recover() // recover from panic
 ```
