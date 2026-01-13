@@ -40,6 +40,8 @@ append()  // add elements to slice
 copy()    // copy slice elements
 delete()  // remove map element
 clear()   // clear all elements from map or slice
+max()     // return maximum value from arguments
+min()     // return minimum value from arguments
 complex() // create complex number
 real()    // get real part of complex
 imag()    // get imaginary part of complex
