@@ -39,6 +39,7 @@ cap()     // capacity of array, slice
 append()  // add elements to slice
 copy()    // copy slice elements
 delete()  // remove map element
+clear()   // clear all elements from map or slice
 complex() // create complex number
 real()    // get real part of complex
 imag()    // get imaginary part of complex
