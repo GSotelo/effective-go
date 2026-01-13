@@ -283,3 +283,5 @@ Variables declared in inner blocks override those in outer blocks within that sc
 
 ### Shadowing risk
 You can declare a variable with the same name in an inner block. This **shadows** (hides) the outer variable within that inner scope. While technically valid, shadowing can cause confusion and bugs. Be careful when reusing variable names in nested scopes.
+
+See [Shadowing](shadowing.md) for more details.
