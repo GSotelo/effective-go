@@ -150,7 +150,7 @@ func PrintMessage(msg string) {
 // file2.go
 package myapp
 
-import "fmt"  // must import separately; file1.go's import doesn't apply here
+import "fmt"  // imports are file-scoped; each file needs its own
 
 func AnotherFunction() {
     fmt.Println("Hello")  // can use fmt here because of the import above
