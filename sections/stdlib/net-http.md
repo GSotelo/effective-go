@@ -25,30 +25,46 @@ func main() {
 
 ## ServeMux
 
-A `ServeMux` is a router. It looks at the URL path and decides which handler function should respond.
+A `ServeMux` is a basic request multiplexer (hence "mux"), not a full-featured router. It matches incoming requests to handlers based on URL paths.
 
-Think of it like a receptionist: when a request arrives at `/users`, the ServeMux directs it to the users handler. When a request arrives at `/products`, it goes to the products handler.
+**What ServeMux provides:**
 
-```go
-// Go has a built-in "default" router ready to use
-http.HandleFunc("/users", usersHandler)    // registers to default router
-http.HandleFunc("/products", productsHandler)
+- Exact path matches: `/users` matches only `/users`
+- Prefix matches with trailing slash: `/users/` matches `/users/anything`
+- Method-agnostic by default (you check HTTP methods manually in handlers)
 
-http.ListenAndServe(":8080", nil)  // nil = use the default router
-```
+**What ServeMux lacks:**
 
-The `nil` tells Go: "use the default router where I registered my handlers."
-
-You can also create your own router instead of using the default:
+- No path parameters (e.g., `/users/:id`)
+- No regex matching
+- No middleware chain support
 
 ```go
-mux := http.NewServeMux()  // create your own router
-mux.HandleFunc("/users", usersHandler)
+mux := http.NewServeMux()
+mux.HandleFunc("/users", handleUsers)      // exact match
+mux.HandleFunc("/users/", handleUserByID)  // prefix match: catches /users/*
 
-http.ListenAndServe(":8080", mux)  // pass your router instead of nil
+http.ListenAndServe(":8080", mux)
 ```
 
-**Why create your own?** The default ServeMux is a global variable. Any code in your project—including third-party packages—can add routes to it. For small prototypes this is fine, but in larger projects, create your own to control exactly which routes exist.
+To extract path parameters, you parse manually:
+
+```go
+func handleUserByID(w http.ResponseWriter, r *http.Request) {
+    // /users/123 -> "123"
+    id := strings.TrimPrefix(r.URL.Path, "/users/")
+    fmt.Fprintf(w, "User ID: %s", id)
+}
+```
+
+**Default vs custom ServeMux:** When you pass `nil` to `http.ListenAndServe`, Go uses a global default ServeMux. This is fine for prototypes, but in larger projects create your own—any package (including third-party dependencies) can register routes on the global default.
+
+**For real routing**, consider these popular alternatives:
+
+- `gorilla/mux` - feature-rich, popular
+- `chi` - lightweight, idiomatic
+- `httprouter` - high performance
+- `gin` - full web framework
 
 ## Handler interface
 
