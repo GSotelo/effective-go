@@ -25,9 +25,30 @@ func main() {
 
 ## ServeMux
 
-A `ServeMux` is an HTTP request multiplexer that matches incoming requests to registered handlers based on URL patterns. When you pass `nil` to `http.ListenAndServe`, Go uses the default `ServeMux` (`http.DefaultServeMux`) where `http.HandleFunc` registers its handlers.
+A `ServeMux` is a router. It looks at the URL path and decides which handler function should respond.
 
-The default ServeMux is fine for small prototypes, but avoid it in larger projects. Since `http.DefaultServeMux` is a global variable, any package—including third-party dependencies—can register handlers on it. This can expose unintended endpoints or allow malicious code to intercept requests without your knowledge.
+Think of it like a receptionist: when a request arrives at `/users`, the ServeMux directs it to the users handler. When a request arrives at `/products`, it goes to the products handler.
+
+```go
+// Go has a built-in "default" router ready to use
+http.HandleFunc("/users", usersHandler)    // registers to default router
+http.HandleFunc("/products", productsHandler)
+
+http.ListenAndServe(":8080", nil)  // nil = use the default router
+```
+
+The `nil` tells Go: "use the default router where I registered my handlers."
+
+You can also create your own router instead of using the default:
+
+```go
+mux := http.NewServeMux()  // create your own router
+mux.HandleFunc("/users", usersHandler)
+
+http.ListenAndServe(":8080", mux)  // pass your router instead of nil
+```
+
+**Why create your own?** The default ServeMux is a global variable. Any code in your project—including third-party packages—can add routes to it. For small prototypes this is fine, but in larger projects, create your own to control exactly which routes exist.
 
 ## Handler interface
 
