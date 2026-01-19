@@ -68,7 +68,7 @@ func handleUserByID(w http.ResponseWriter, r *http.Request) {
 
 ## Handler interface
 
-The `http.Handler` interface is the foundation of HTTP handling in Go:
+The `http.Handler` interface is Go's core abstraction for handling HTTP requests.
 
 ```go
 type Handler interface {
@@ -76,7 +76,13 @@ type Handler interface {
 }
 ```
 
-Any type that implements `ServeHTTP` can handle HTTP requests.
+Any type that has a `ServeHTTP(w http.ResponseWriter, r *http.Request)` method automatically becomes a Handler.
+
+**Why it matters:**
+
+- ServeMux expects Handlers
+- Middleware wraps Handlers
+- The HTTP server uses Handlers to process requests
 
 ## Request Handling
 
