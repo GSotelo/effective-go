@@ -93,14 +93,13 @@ mux.HandleFunc("/", homeHandler)             // registers to your mux
 log.Fatal(http.ListenAndServe(":8080", mux)) // pass your mux explicitly
 ```
 
-The default ServeMux is a global variable (`http.DefaultServeMux`). This is fine for prototypes, but in larger projects create your own—any package (including third-party dependencies) can register routes on the global default without your knowledge.
+The default `ServeMux` is a global variable (`http.DefaultServeMux`). This is fine for prototypes, but in larger projects create your own—any package (including third-party dependencies) can register routes on the global default without your knowledge.
 
 **For real routing**, consider these popular alternatives:
 
 - `chi` - lightweight, idiomatic (recommended)
 - `httprouter` - high performance
 - `gin` - full web framework
-- `gorilla/mux` - feature-rich but archived/unmaintained
 
 ## Handler interface
 
