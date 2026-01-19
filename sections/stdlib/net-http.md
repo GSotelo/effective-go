@@ -27,6 +27,8 @@ func main() {
 
 A `ServeMux` is an HTTP request multiplexer that matches incoming requests to registered handlers based on URL patterns. When you pass `nil` to `http.ListenAndServe`, Go uses the default `ServeMux` (`http.DefaultServeMux`) where `http.HandleFunc` registers its handlers.
 
+The default ServeMux is fine for small prototypes, but avoid it in larger projects. Since `http.DefaultServeMux` is a global variable, any package—including third-party dependencies—can register handlers on it. This can expose unintended endpoints or allow malicious code to intercept requests without your knowledge.
+
 ## Handler interface
 
 The `http.Handler` interface is the foundation of HTTP handling in Go:
