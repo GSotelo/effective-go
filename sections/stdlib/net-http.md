@@ -1,8 +1,8 @@
-# net/http Package
+# net/http package
 
 The `net/http` package provides HTTP client and server implementations. It's one of Go's most powerful standard library packages for building web applications.
 
-## HTTP Server Basics
+## HTTP server basics
 
 The simplest way to start an HTTP server is with `http.ListenAndServe` and `http.HandleFunc`.
 
@@ -19,9 +19,15 @@ func main() {
         fmt.Fprintf(w, "Hello, World!")
     })
 
-    http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(":8080", nil) // nil uses the default ServeMux
 }
 ```
+
+## ServeMux
+
+A `ServeMux` is an HTTP request multiplexer that matches incoming requests to registered handlers based on URL patterns. When you pass `nil` to `http.ListenAndServe`, Go uses the default `ServeMux` (`http.DefaultServeMux`) where `http.HandleFunc` registers its handlers.
+
+## Handler interface
 
 The `http.Handler` interface is the foundation of HTTP handling in Go:
 
