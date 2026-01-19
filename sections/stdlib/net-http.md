@@ -11,6 +11,7 @@ package main
 
 import (
     "fmt"
+    "log"
     "net/http"
 )
 
@@ -19,23 +20,22 @@ func main() {
         fmt.Fprintf(w, "Hello, World!")
     })
 
-    http.ListenAndServe(":8080", nil) // nil uses the default ServeMux
+    log.Fatal(http.ListenAndServe(":8080", nil)) // nil uses the default ServeMux
 }
 ```
 
 ## ServeMux
 
-A `ServeMux` is a basic request multiplexer (hence "mux"), not a full-featured router. It matches incoming requests to handlers based on URL paths.
+A `ServeMux` is a request multiplexer (hence "mux") that matches incoming requests to handlers based on URL paths.
 
 **What ServeMux provides:**
 
 - Exact path matches: `/users` matches only `/users`
 - Prefix matches with trailing slash: `/users/` matches `/users/anything`
-- Method-agnostic by default (you check HTTP methods manually in handlers)
+- **Go 1.22+**: Method routing and path parameters
 
 **What ServeMux lacks:**
 
-- No path parameters (e.g., `/users/:id`)
 - No regex matching
 - No middleware chain support
 
@@ -44,10 +44,33 @@ mux := http.NewServeMux()
 mux.HandleFunc("/users", handleUsers)      // exact match
 mux.HandleFunc("/users/", handleUserByID)  // prefix match: catches /users/*
 
-http.ListenAndServe(":8080", mux)
+log.Fatal(http.ListenAndServe(":8080", mux))
 ```
 
-To extract path parameters, you parse manually:
+**Go 1.22+ enhancements:** ServeMux now supports method routing and path parameters:
+
+```go
+mux := http.NewServeMux()
+
+// Method-specific routing
+mux.HandleFunc("GET /users", listUsers)
+mux.HandleFunc("POST /users", createUser)
+
+// Path parameters with {name} syntax
+mux.HandleFunc("GET /users/{id}", getUser)
+mux.HandleFunc("DELETE /users/{id}", deleteUser)
+
+log.Fatal(http.ListenAndServe(":8080", mux))
+```
+
+```go
+func getUser(w http.ResponseWriter, r *http.Request) {
+    id := r.PathValue("id")  // Go 1.22+: extract path parameter
+    fmt.Fprintf(w, "User ID: %s", id)
+}
+```
+
+For Go versions before 1.22, extract path parameters manually:
 
 ```go
 func handleUserByID(w http.ResponseWriter, r *http.Request) {
@@ -57,14 +80,27 @@ func handleUserByID(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-**Default vs custom ServeMux:** When you pass `nil` to `http.ListenAndServe`, Go uses a global default ServeMux. This is fine for prototypes, but in larger projects create your own—any package (including third-party dependencies) can register routes on the global default.
+**Default vs custom ServeMux:**
+
+```go
+// Using the default (global) ServeMux
+http.HandleFunc("/", homeHandler)            // registers to http.DefaultServeMux
+log.Fatal(http.ListenAndServe(":8080", nil)) // nil = use DefaultServeMux
+
+// Using your own ServeMux
+mux := http.NewServeMux()
+mux.HandleFunc("/", homeHandler)             // registers to your mux
+log.Fatal(http.ListenAndServe(":8080", mux)) // pass your mux explicitly
+```
+
+The default ServeMux is a global variable (`http.DefaultServeMux`). This is fine for prototypes, but in larger projects create your own—any package (including third-party dependencies) can register routes on the global default without your knowledge.
 
 **For real routing**, consider these popular alternatives:
 
-- `gorilla/mux` - feature-rich, popular
-- `chi` - lightweight, idiomatic
+- `chi` - lightweight, idiomatic (recommended)
 - `httprouter` - high performance
 - `gin` - full web framework
+- `gorilla/mux` - feature-rich but archived/unmaintained
 
 ## Handler interface
 
@@ -164,7 +200,15 @@ if err != nil {
 }
 defer resp.Body.Close()
 
+// Always check status code
+if resp.StatusCode != http.StatusOK {
+    log.Fatalf("unexpected status: %s", resp.Status)
+}
+
 body, err := io.ReadAll(resp.Body)
+if err != nil {
+    log.Fatal(err)
+}
 ```
 
 Using `http.Client` for more control:
@@ -186,13 +230,20 @@ if err != nil {
     log.Fatal(err)
 }
 defer resp.Body.Close()
+
+if resp.StatusCode != http.StatusOK {
+    log.Fatalf("unexpected status: %s", resp.Status)
+}
 ```
 
 POST request with JSON body:
 
 ```go
 data := map[string]string{"name": "gopher"}
-jsonData, _ := json.Marshal(data)
+jsonData, err := json.Marshal(data)
+if err != nil {
+    log.Fatal(err)
+}
 
 resp, err := http.Post(
     "https://api.example.com/users",
@@ -203,6 +254,10 @@ if err != nil {
     log.Fatal(err)
 }
 defer resp.Body.Close()
+
+if resp.StatusCode != http.StatusCreated {
+    log.Fatalf("unexpected status: %s", resp.Status)
+}
 ```
 
 ## Common Patterns
@@ -255,11 +310,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func handler(w http.ResponseWriter, r *http.Request) {
     data, err := fetchData()
     if err != nil {
+        log.Printf("fetchData failed: %v", err)
         http.Error(w, "Internal Server Error", http.StatusInternalServerError)
         return
     }
 
     w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(data)
+    if err := json.NewEncoder(w).Encode(data); err != nil {
+        log.Printf("error encoding response: %v", err)
+    }
 }
 ```
