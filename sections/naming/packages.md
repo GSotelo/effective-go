@@ -1,4 +1,4 @@
-# Package Naming
+# Package naming
 
 ## Keep it short and simple
 
