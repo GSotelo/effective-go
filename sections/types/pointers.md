@@ -1,4 +1,4 @@
-# What are Pointers?
+# What are pointers?
 
 In Go, a pointer is a variable that stores the memory address of another variable.
 
