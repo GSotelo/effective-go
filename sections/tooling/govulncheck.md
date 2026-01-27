@@ -1,12 +1,8 @@
-# Go Tooling
-
-Go's tooling ecosystem is one of its greatest strengths, providing a comprehensive suite of built-in tools that standardize development workflows across teams and projects. These tools handle everything from code formatting and testing to security scanning and performance profiling, making Go development productive and consistent.
-
-## govulncheck
+# govulncheck
 
 The `govulncheck` tool scans your Go code and dependencies for known security vulnerabilities from the Go vulnerability database.
 
-### Installation
+## Installation
 
 Install govulncheck using `go install`:
 
@@ -14,7 +10,7 @@ Install govulncheck using `go install`:
 go install golang.org/x/vuln/cmd/govulncheck@latest
 ```
 
-### Usage
+## Usage
 
 Run govulncheck in your project directory:
 
@@ -22,7 +18,7 @@ Run govulncheck in your project directory:
 govulncheck ./...
 ```
 
-### Example: Detecting vulnerable dependencies
+## Example: Detecting vulnerable dependencies
 
 Consider a simple program that uses an older version of the `golang.org/x/text` package with a known vulnerability:
 
@@ -78,7 +74,7 @@ After updating, running `govulncheck ./...` again should report no vulnerabiliti
 No vulnerabilities found.
 ```
 
-### Best practices
+## Best practices
 
 - Run `govulncheck` regularly as part of your CI/CD pipeline
 - Integrate it into pre-deployment security checks
