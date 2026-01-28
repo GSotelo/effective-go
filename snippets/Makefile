@@ -1,24 +1,24 @@
-.PHONY: run build test test-variadic test-interfaces clean
+.PHONY: help run build test test-variadic test-interfaces clean
 
-# Run all snippets
-run:
+.DEFAULT_GOAL := help
+
+help: ## Show this help message
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+run: ## Run all snippets
 	go run .
 
-# Build the binary
-build:
+build: ## Build the binary
 	go build -o bin/snippets .
 
-# Test all packages
-test:
+test: ## Test all packages
 	go test ./... -v
 
-# Test individual packages
-test-variadic:
+test-variadic: ## Test variadic package
 	go test ./variadic -v
 
-test-interfaces:
+test-interfaces: ## Test interfaces package
 	go test ./interfaces -v
 
-# Clean build artifacts
-clean:
+clean: ## Clean build artifacts
 	rm -rf bin/
