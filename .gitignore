@@ -6,4 +6,5 @@
 notes/
 
 # macOS system files
-.DS_Store
+.DS_Storesnippets/snippets
+snippets/bin/
