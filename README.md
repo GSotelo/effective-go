@@ -25,6 +25,7 @@ Writing idiomatic Go makes your code cleaner, more consistent, and way easier to
   - [Iota](sections/types/predeclared/iota.md)
   - [Arrays](sections/types/composite/arrays.md)
   - [Slices](sections/types/composite/slices.md)
+  - [Maps](sections/types/composite/maps.md)
   - [Pointers](sections/types/pointers.md)
   - [Channels](sections/types/channels.md)
 - [Functions](sections/functions.md)
