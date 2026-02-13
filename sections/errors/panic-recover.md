@@ -1,42 +1,139 @@
 # Panic and Recover
 
-**panic** is a runtime condition that represents an unrecoverable error state where normal execution cannot continue. It occurs either when the Go runtime encounters critical errors (nil pointer dereferences, out-of-bounds array access, type assertion failures) or when explicitly triggered by calling the panic() built-in function.
+**Panic** is a built-in function that stops normal execution of the current goroutine. When a function calls `panic`, normal execution stops, all deferred functions are executed, and then the function returns to its caller. This process continues up the stack until all functions in the current goroutine have returned, at which point the program crashes.
 
-**recover** is the mechanism to intercept and handle a panic, preventing it from crashing the program. It only functions when called directly from within a deferred function, where it captures the panic value and halts the stack unwinding process, allowing the program to regain control.
+**Recover** is a built-in function that regains control of a panicking goroutine. It only works when called directly inside a deferred function—calling `recover` outside a defer or when the goroutine isn't panicking returns `nil` and has no effect.
 
-## Panic Example
+## When Panics Occur
+
+Panics happen either explicitly via `panic()` or implicitly when the runtime detects unrecoverable errors:
 
 ```go
-func processData(data []int) {
-	if len(data) == 0 {
-		panic("cannot process empty data")
+// Explicit panic for broken invariants
+func MustCompile(pattern string) *Regexp {
+	re, err := Compile(pattern)
+	if err != nil {
+		panic("regexp: Compile(" + pattern + "): " + err.Error())
+	}
+	return re
+}
+
+// Runtime panics (implicit)
+var s []int
+_ = s[0]          // panic: index out of range
+
+var m map[string]int
+m["key"] = 1      // panic: assignment to entry in nil map
+
+var p *int
+_ = *p            // panic: nil pointer dereference
+
+var i interface{} = "string"
+_ = i.(int)       // panic: interface conversion
+```
+
+## Basic Recover Pattern
+
+Recover must be called directly within a deferred function:
+
+```go
+func safeCall(fn func()) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("panic recovered: %v", r)
+		}
+	}()
+	fn()
+	return nil
+}
+
+func main() {
+	err := safeCall(func() {
+		panic("something went wrong")
+	})
+	fmt.Println(err) // panic recovered: something went wrong
+}
+```
+
+## HTTP Server Recovery Middleware
+
+A common real-world pattern—prevent one bad request from crashing your entire server:
+
+```go
+func recoveryMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		defer func() {
+			if err := recover(); err != nil {
+				// Log the panic with stack trace for debugging
+				log.Printf("panic: %v\n%s", err, debug.Stack())
+
+				// Return 500 to client
+				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			}
+		}()
+		next.ServeHTTP(w, r)
+	})
+}
+```
+
+## Library Pattern: Convert Panic to Error
+
+Libraries should never let panics escape to callers. Convert internal panics to errors:
+
+```go
+package parser
+
+// Parse returns an error instead of panicking
+func Parse(input string) (result *AST, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("parse error: %v", r)
+		}
+	}()
+	return parse(input), nil
+}
+
+// Internal function may panic for simplicity
+func parse(input string) *AST {
+	if input == "" {
+		panic("empty input")
+	}
+	// ... parsing logic that might panic on malformed input
+	return &AST{}
+}
+```
+
+## Goroutine Recovery
+
+Panics don't cross goroutine boundaries. Each goroutine must handle its own panics:
+
+```go
+func worker(jobs <-chan int, results chan<- int) {
+	for job := range jobs {
+		// Each job gets its own recovery
+		func() {
+			defer func() {
+				if r := recover(); r != nil {
+					log.Printf("worker panic on job %d: %v", job, r)
+					results <- -1 // Signal failure
+				}
+			}()
+			results <- process(job)
+		}()
 	}
 }
 ```
 
-## Recover Example
+## Key Points
 
-```go
-func safeProcess() {
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Printf("recovered from panic: %v\n", r)
-		}
-	}()
-	panic("something went wrong")
-}
-```
+- **Panic is not for normal error handling.** Use `error` return values for expected failures. Panic is for truly exceptional situations: programmer errors, broken invariants, or impossible conditions.
 
-## Philosophy and Best Practices
+- **Recover only works in deferred functions.** Calling `recover()` in normal code does nothing—it must be inside a `defer` to catch panics.
 
-- **Panic and recover are NOT exceptions.** Unlike try/catch in other languages, Go favors explicit error handling through return values, not control-flow-by-panic.
+- **Libraries must not leak panics.** Always recover at package boundaries and convert panics to errors. Let callers decide how to handle failures.
 
-- **Panic indicates fatal, unrecoverable situations.** Use panic only for programmer errors (nil dereferences, out-of-bounds access) or broken invariants where continuing would cause undefined behavior or data corruption.
+- **Each goroutine needs its own recovery.** A panic in one goroutine cannot be recovered by another. An unrecovered panic in any goroutine crashes the entire program.
 
-- **Recover enables graceful shutdown and logging.** The primary use of recover is preventing a single panic from crashing your service. Log panic details to monitoring systems, clean up resources, and typically exit gracefully rather than resuming normal operation.
+- **Use `debug.Stack()` for diagnostics.** When recovering from panics, log the stack trace to help debug the root cause.
 
-- **Library authors must not leak panics.** Libraries must recover from internal panics and return errors instead. Never let panics escape package boundaries—let library consumers decide how to handle errors.
-
-- **Only deferred functions execute after panic.** Normal execution stops immediately on panic. Deferred functions execute in LIFO order during stack unwinding, which is why recover only works inside defer.
-
-- **Panics bubble up through call stacks, not across goroutines.** A panic propagates up its goroutine's stack until recovered or it reaches the top. Panics don't cross goroutine boundaries, but an unrecovered panic in any goroutine crashes the entire program.
+- **Prefer `Must` prefix for panic-on-error helpers.** Functions like `regexp.MustCompile` or `template.Must` signal that they panic instead of returning errors—use them only with compile-time constants.
