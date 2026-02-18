@@ -20,5 +20,8 @@ test-variadic: ## Test variadic package
 test-interfaces: ## Test interfaces package
 	go test ./interfaces -v
 
+test-maps: ## Test maps package
+	go test ./maps -v
+
 clean: ## Clean build artifacts
 	rm -rf bin/
