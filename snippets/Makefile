@@ -11,6 +11,9 @@ run: ## Run all snippets
 build: ## Build the binary
 	go build -o bin/snippets .
 
+vet: ## Static AST code analysis 
+	go vet ./...
+
 test: ## Test all packages
 	go test ./... -v
 
