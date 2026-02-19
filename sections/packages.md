@@ -1,6 +1,6 @@
 # Packages in Go
 
-A package is a collection of related code files in the same directory. All files in a package declare the same package name at the top. Go uses packages to organize code, control visibility, and enable code reuse.
+A package is a collection of related code files in the same directory. All files in a package declare the same package name at the top. Go uses packages to organize code, control visibility, and enable code reuse. Don't use hyphens in package names.
 
 ## Naming conventions
 
