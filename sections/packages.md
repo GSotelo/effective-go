@@ -15,9 +15,9 @@ func Query(sql string) {  // verb - what it does
 }
 ```
 
-## Special case: package main
+## Special case: Package main
 
-The `main` package is a special package used to create executable programs rather than reusable libraries.
+The `main` package is special — it tells Go to build an executable rather than a reusable library. Within it, the runtime looks for `func main()` as the program's entry point. It stays lowercase by design since it's not meant to be exported or called by other packages; it's a reserved convention used internally by the runtime.
 
 ```go
 package main
