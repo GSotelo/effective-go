@@ -5,4 +5,5 @@ Go's tooling ecosystem is one of its greatest strengths, providing a comprehensi
 ## Tools
 
 - [gofmt](gofmt.md) - Code formatting
+- [go install](go-install.md) - Compile and install packages and dependencies
 - [govulncheck](govulncheck.md) - Security vulnerability scanning
