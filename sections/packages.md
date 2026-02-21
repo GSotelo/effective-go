@@ -17,7 +17,7 @@ func Query(sql string) {  // verb - what it does
 
 ## Special case: Package main
 
-The `main` package is special — it tells Go to build an executable rather than a reusable library. Within it, the runtime looks for `func main()` as the program's entry point. It stays lowercase by design since it's not meant to be exported or called by other packages; it's a reserved convention used internally by the runtime.
+The `main` package is special — it tells Go to build an executable rather than a reusable library. Within it, the runtime looks for `func main()` as the program's entry point. It stays lowercase by design since it's not meant to be exported or called by other packages; it's a reserved convention used internally by the runtime. In Go, a Package Import Path is the Module Path (defined in go.mod) joined with the relative directory path to the package files.
 
 ```go
 package main
