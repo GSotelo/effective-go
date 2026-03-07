@@ -40,6 +40,3 @@ Writing idiomatic Go makes your code cleaner, more consistent, and way easier to
 - [Standard library](sections/stdlib/net-http.md)
   - [net/http](sections/stdlib/net-http.md)
 - [Tooling](sections/tooling/overview.md)
-  - [gofmt](sections/tooling/gofmt.md)
-  - [govulncheck](sections/tooling/govulncheck.md)
-  - [Environment variables](sections/tooling/env-vars.md)
