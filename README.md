@@ -33,8 +33,6 @@ Writing idiomatic Go makes your code cleaner, more consistent, and way easier to
   - [Implicit interfaces](sections/types/interfaces/implicit-interfaces.md)
   - [Dependency injection](sections/types/interfaces/dependency-injection.md)
 - [Errors](sections/errors/sentinel-errors.md)
-  - [Sentinel errors](sections/errors/sentinel-errors.md)
-  - [Panic and recover](sections/errors/panic-recover.md)
 - [Concurrency](sections/concurrency.md)
 - [Packages](sections/packages.md)
 - [Standard library](sections/stdlib/net-http.md)
