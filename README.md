@@ -16,7 +16,6 @@ Writing idiomatic Go makes your code cleaner, more consistent, and way easier to
 - [Shadowing](sections/shadowing.md)
 - [Nil](sections/nil.md)
 - [Naming](sections/naming/overview.md)
-  - [Packages](sections/naming/packages.md)
 - [Types](sections/types/types.md)
 - [Functions](sections/functions.md)
 - [Interfaces](sections/types/interfaces/overview.md)
