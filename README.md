@@ -30,8 +30,6 @@ Writing idiomatic Go makes your code cleaner, more consistent, and way easier to
   - [Channels](sections/types/channels.md)
 - [Functions](sections/functions.md)
 - [Interfaces](sections/types/interfaces/overview.md)
-  - [Implicit interfaces](sections/types/interfaces/implicit-interfaces.md)
-  - [Dependency injection](sections/types/interfaces/dependency-injection.md)
 - [Errors](sections/errors/sentinel-errors.md)
 - [Concurrency](sections/concurrency.md)
 - [Packages](sections/packages.md)
