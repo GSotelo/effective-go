@@ -36,3 +36,27 @@ func ExampleAdd() {
 ```
 
 If the printed output doesn't match the `// Output:` comment, the test fails.
+
+## Table-driven tests
+
+A common pattern is a slice of test cases, each with a `wantErr bool` field to check if an error was expected.
+
+```go
+tests := []struct {
+    name    string
+    input   string
+    wantErr bool
+}{
+    {"valid input", "123", false},
+    {"invalid input", "abc", true},
+}
+
+for _, tt := range tests {
+    t.Run(tt.name, func(t *testing.T) {
+        _, err := Parse(tt.input)
+        if (err != nil) != tt.wantErr {
+            t.Errorf("got err = %v, wantErr %v", err, tt.wantErr)
+        }
+    })
+}
+```
