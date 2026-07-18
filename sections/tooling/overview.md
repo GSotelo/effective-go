@@ -8,3 +8,4 @@ Go's tooling ecosystem is one of its greatest strengths, providing a comprehensi
 - [go install](go-install.md) - Compile and install packages and dependencies
 - [govulncheck](govulncheck.md) - Security vulnerability scanning
 - [Environment variables](env-vars.md) - Toolchain environment variables
+- [Testing conventions](testing.md) - `testdata/` and example functions

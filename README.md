@@ -25,3 +25,4 @@ Writing idiomatic Go makes your code cleaner, more consistent, and way easier to
 - [Packages](sections/packages.md)
 - [Standard library](sections/stdlib/net-http.md)
 - [Tooling](sections/tooling/overview.md)
+- [Testing conventions](sections/tooling/testing.md)
